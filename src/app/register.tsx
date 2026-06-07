@@ -46,7 +46,7 @@ export default function RegisterScreen() {
             );
 
             Alert.alert("Success", "Account created successfully");
-            router.replace("/dashboard");
+            router.replace("/login");
         } catch (error: any) {
             Alert.alert("Registration Failed", error.message);
         }

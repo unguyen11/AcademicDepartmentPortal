@@ -8,7 +8,9 @@ import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 
 export default function DashboardScreen() {
+
     const [fullName, setFullName] = useState("");
+
     // Logout user
     const logout = async () => {
         await signOut(auth);
@@ -42,6 +44,7 @@ export default function DashboardScreen() {
             style={{
                 flex: 1,
                 padding: 20,
+                backgroundColor: "#f5f5f5",
             }}
         >
             <Text
@@ -49,8 +52,8 @@ export default function DashboardScreen() {
                     fontSize: 28,
                     fontWeight: "bold",
                     textAlign: "center",
-                    marginBottom: 30,
                     marginTop: 40,
+                    marginBottom: 10,
                 }}
             >
                 Academic Department Portal
@@ -59,39 +62,85 @@ export default function DashboardScreen() {
             <Text
                 style={{
                     textAlign: "center",
-                    marginBottom: 20,
                     fontSize: 18,
+                    marginBottom: 5,
                 }}
             >
                 Welcome, {fullName}
             </Text>
 
-            <TouchableOpacity
-                style={buttonStyle}
-                onPress={() => router.push("/courses")}
+            <Text
+                style={{
+                    textAlign: "center",
+                    color: "gray",
+                    marginBottom: 25,
+                }}
             >
-                <Text style={textStyle}>Courses</Text>
-            </TouchableOpacity>
+                Student Services Dashboard
+            </Text>
 
-            <TouchableOpacity
-                style={buttonStyle}
-                onPress={() => router.push("/faculty")}
+            {/* First row */}
+            <View
+                style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginBottom: 15,
+                }}
             >
-                <Text style={textStyle}>Faculty Directory</Text>
-            </TouchableOpacity>
+                <DashboardCard
+                    title="Courses"
+                    onPress={() => router.push("/courses")}
+                />
 
-            <TouchableOpacity
-                style={buttonStyle}
-                onPress={() => router.push("/resources")}
+                <DashboardCard
+                    title="Faculty"
+                    onPress={() => router.push("/faculty")}
+                />
+            </View>
+
+            {/* Second row */}
+            <View
+                style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginBottom: 15,
+                }}
             >
-                <Text style={textStyle}>Student Resources</Text>
-            </TouchableOpacity>
+                <DashboardCard
+                    title="Resources"
+                    onPress={() => router.push("/resources")}
+                />
+
+                <DashboardCard
+                    title="Search"
+                    onPress={() => router.push("/search")}
+                />
+            </View>
+
+            {/* Third row */}
+            <View
+                style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginBottom: 15,
+                }}
+            >
+                <DashboardCard
+                    title="Announcements"
+                    onPress={() => router.push("/announcements")}
+                />
+
+                <DashboardCard
+                    title="Calendar"
+                    onPress={() => router.push("/calendar")}
+                />
+            </View>
 
             <TouchableOpacity
                 style={{
                     backgroundColor: "#dc2626",
                     padding: 15,
-                    borderRadius: 8,
+                    borderRadius: 10,
                     marginTop: 20,
                 }}
                 onPress={logout}
@@ -110,15 +159,46 @@ export default function DashboardScreen() {
     );
 }
 
-const buttonStyle = {
-    backgroundColor: "#2563eb",
-    padding: 15,
-    borderRadius: 8,
-    marginBottom: 10,
-};
+// Dashboard card component
+function DashboardCard({
+                           title,
+                           onPress,
+                       }: {
+    title: string;
+    onPress: () => void;
+}) {
+    return (
+        <TouchableOpacity
+            onPress={onPress}
+            style={{
+                width: "48%",
+                height: 110,
+                backgroundColor: "white",
+                borderRadius: 12,
 
-const textStyle = {
-    color: "white",
-    textAlign: "center" as const,
-    fontWeight: "bold" as const,
-};
+                justifyContent: "center",
+                alignItems: "center",
+
+                shadowColor: "#000",
+                shadowOffset: {
+                    width: 0,
+                    height: 2,
+                },
+                shadowOpacity: 0.1,
+                shadowRadius: 4,
+
+                elevation: 3,
+            }}
+        >
+            <Text
+                style={{
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                }}
+            >
+                {title}
+            </Text>
+        </TouchableOpacity>
+    );
+}

@@ -21,6 +21,16 @@ export default function RootLayout() {
             />
 
             <Stack.Screen
+                name="announcements"
+                options={{ title: "Announcements" }}
+            />
+
+            <Stack.Screen
+                name="search"
+                options={{ title: "Search" }}
+            />
+
+            <Stack.Screen
                 name="courses"
                 options={{ title: "Courses" }}
             />
@@ -33,6 +43,11 @@ export default function RootLayout() {
             <Stack.Screen
                 name="resources"
                 options={{ title: "Resources" }}
+            />
+
+            <Stack.Screen
+                name="calendar"
+                options={{ title: "Academic Calendar" }}
             />
         </Stack>
     );
