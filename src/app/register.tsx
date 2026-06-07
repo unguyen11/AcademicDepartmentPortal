@@ -11,22 +11,41 @@ import {
 import { router } from "expo-router";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 
 export default function RegisterScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [fullName, setFullName] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
-    // Create new user
+// Create new user
     const register = async () => {
+
+        if (password !== confirmPassword) {
+            Alert.alert("Error", "Passwords do not match");
+            return;
+        }
+
         try {
-            await createUserWithEmailAndPassword(
-                auth,
-                email,
-                password
+            const userCredential =
+                await createUserWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+            await setDoc(
+                doc(db, "users", userCredential.user.uid),
+                {
+                    fullName,
+                    email,
+                    role: "student",
+                }
             );
 
             Alert.alert("Success", "Account created successfully");
-
             router.replace("/dashboard");
         } catch (error: any) {
             Alert.alert("Registration Failed", error.message);
@@ -56,8 +75,30 @@ export default function RegisterScreen() {
                         marginBottom: 20,
                     }}
                 >
-                    Create Account
+                    Academic Department Portal
                 </Text>
+
+                <Text
+                    style={{
+                        textAlign: "center",
+                        marginBottom: 20,
+                        color: "gray",
+                    }}
+                >
+                    Create your student account
+                </Text>
+
+                <TextInput
+                    placeholder="Full Name"
+                    value={fullName}
+                    onChangeText={setFullName}
+                    style={{
+                        borderWidth: 1,
+                        padding: 12,
+                        marginBottom: 12,
+                        borderRadius: 8,
+                    }}
+                />
 
                 <TextInput
                     placeholder="Email"
@@ -76,6 +117,19 @@ export default function RegisterScreen() {
                     placeholder="Password"
                     value={password}
                     onChangeText={setPassword}
+                    secureTextEntry
+                    style={{
+                        borderWidth: 1,
+                        padding: 12,
+                        marginBottom: 20,
+                        borderRadius: 8,
+                    }}
+                />
+
+                <TextInput
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
                     secureTextEntry
                     style={{
                         borderWidth: 1,
